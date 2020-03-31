@@ -1,0 +1,75 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def makegalaxy(n, stars):
+    x = np.random.rand(n)
+    y = np.random.rand(n)
+    x = x*10
+    y = y*10
+    plt.scatter(x,y)
+    i=0
+    while i < n:
+        star = [x[i],y[i]]
+        life = 0
+        spread = 0
+        reachable = np.random.rand(1)[0]
+        stars.append([star, life, spread, reachable])
+        i=i+1
+
+def birth(stars):
+    for star in stars:
+        if star[1] == 0:
+            num = np.random.rand(1)[0]
+            if num < 0.01:
+                star[1] = 1
+def spreadwant(stars):
+    for star in stars:
+        if star[1] == 1 and star[2] == 0:
+            num = np.random.rand(1)
+            if num <0.5:
+                star[2] = 1
+def spread(stars, time):
+    for item in stars:
+        if item[1] == 1 & item[2] == 1:
+            for j in stars:
+                if ((j[0][0]-item[0][0])**2 + (j[0][1]-item[0][1])**2)**0.5 < 1:
+                    if ((j[0][0]-item[0][0])**2 + (j[0][1]-item[0][1])**2)**0.5 != 0:
+                        num = np.random.rand(1)[0]
+                        if num > j[3]:
+                            arrival.append([time + 6, j[0]])
+
+def arrivals(stars, arrival, time):
+    for item in arrival:
+        if item[0] == time:
+            star = item[1]
+            for j in stars:
+                if j[0] == star:
+                    j[1] = 1
+            arrival.remove(item)
+stars = []
+arrival = []
+makegalaxy(30, stars)
+t = 0
+deadx = [1]
+while t < 300 and len(deadx) > 0:
+    birth(stars)
+    spreadwant(stars)
+    spread(stars, t)
+    arrivals(stars, arrival, t)
+    lifex = []
+    lifey = []
+    deadx = []
+    deady = []
+    for star in stars:
+        if star[1] == 1:
+            lifex.append(star[0][0])
+            lifey.append(star[0][1])
+        else:
+            deadx.append(star[0][0])
+            deady.append(star[0][1])
+    plt.ion()
+    plt.scatter(lifex,lifey,color='green')
+    plt.scatter(deadx,deady,color='red')
+    plt.pause(0.05)
+    t = t+1
+print ("time", t*10, "years")
