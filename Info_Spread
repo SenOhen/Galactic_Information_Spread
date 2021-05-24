@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# A function to make a galaxy with randomly ordered stars in a 2-dimensional plane
 def makegalaxy(n, stars):
     x = np.random.rand(n)
     y = np.random.rand(n)
@@ -16,6 +17,7 @@ def makegalaxy(n, stars):
         stars.append([star, life, spread, reachable])
         i=i+1
 
+# Function to randomly start/birth stars
 def birth(stars):
     for star in stars:
         if star[1] == 0:
@@ -28,6 +30,7 @@ def spreadwant(stars):
             num = np.random.rand(1)
             if num <0.5:
                 star[2] = 1
+# Function to express the spread of information between the stars as time passes
 def spread(stars, time):
     for item in stars:
         if item[1] == 1 & item[2] == 1:
